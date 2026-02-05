@@ -13,7 +13,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className="bg-gray-50 text-gray-900 antialiased">{children}</body>
+      <head>
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
+      <body className="bg-[#F4F4F5] text-[#191F28] antialiased">
+        {children}
+      </body>
     </html>
   );
 }

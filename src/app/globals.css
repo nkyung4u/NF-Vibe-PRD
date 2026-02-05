@@ -1,7 +1,44 @@
 @import "tailwindcss";
 
+@theme {
+  --font-pretendard: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+  /* TDS Colors */
+  --color-toss-blue: #0064FF;
+  --color-toss-blue-light: #E8F3FF;
+  --color-toss-blue-hover: #0055D9;
+  --color-toss-black: #191F28;
+  --color-toss-gray-900: #333D4B;
+  --color-toss-gray-700: #4E5968;
+  --color-toss-gray-500: #8B95A1;
+  --color-toss-gray-400: #B0B8C1;
+  --color-toss-gray-300: #D1D6DB;
+  --color-toss-gray-200: #E5E8EB;
+  --color-toss-gray-100: #F2F4F6;
+  --color-toss-gray-50: #F9FAFB;
+  --color-toss-white: #FFFFFF;
+  --color-toss-red: #F04452;
+  --color-toss-red-light: #FFF0F0;
+  --color-toss-green: #30B566;
+  --color-toss-green-light: #E8F5E9;
+}
+
 @layer base {
+  body {
+    font-family: var(--font-pretendard);
+    letter-spacing: -0.02em;
+    line-height: 1.6;
+  }
+
   .input-field {
-    @apply w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500;
+    @apply w-full rounded-xl border border-toss-gray-200 bg-toss-gray-100 px-4 py-3 text-[15px] text-toss-black transition-all duration-200 placeholder:text-toss-gray-400 focus:border-toss-blue focus:bg-toss-white focus:outline-none focus:ring-2 focus:ring-toss-blue/20;
+  }
+
+  textarea.input-field {
+    @apply resize-none;
+  }
+
+  select.input-field {
+    @apply appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20fill%3D%22%238B95A1%22%20d%3D%22M4.5%206l3.5%204%203.5-4z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat pr-10;
   }
 }

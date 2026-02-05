@@ -131,18 +131,28 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen py-8 px-4">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
+    <main className="min-h-screen py-10 px-4">
+      <div className="mx-auto max-w-[640px]">
+        {/* 헤더 */}
+        <div className="mb-10 text-center">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-toss-blue mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z" fill="white" fillOpacity="0.9"/>
+              <path d="M14 2V8H20" fill="white" fillOpacity="0.5"/>
+              <path d="M12 18V12M9 15H15" stroke="#0064FF" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <h1 className="text-[26px] font-bold text-toss-black tracking-tight">
             초간단 PRD 양식
           </h1>
-          <p className="mt-2 text-gray-500">Lean PRD Template</p>
+          <p className="mt-1.5 text-[15px] text-toss-gray-500">
+            양식을 작성하면 노션 데이터베이스에 자동으로 저장됩니다
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* 문서 개요 */}
-          <Section title="문서 개요">
+          <Section title="문서 개요" number={1}>
             <Field label="프로젝트명" required>
               <input
                 type="text"
@@ -179,7 +189,7 @@ export default function Home() {
           </Section>
 
           {/* 배경 및 목적 */}
-          <Section title="배경 및 목적 (The Why)">
+          <Section title="배경 및 목적" subtitle="The Why" number={2}>
             <Field label="문제 정의" required>
               <textarea
                 required
@@ -214,7 +224,7 @@ export default function Home() {
           </Section>
 
           {/* 사용자 및 시나리오 */}
-          <Section title="사용자 및 시나리오 (The Who & How)">
+          <Section title="사용자 및 시나리오" subtitle="The Who & How" number={3}>
             <Field label="타겟 사용자" required>
               <textarea
                 required
@@ -237,25 +247,25 @@ export default function Home() {
           </Section>
 
           {/* 요구사항 상세 */}
-          <Section title="요구사항 상세 (The What)">
+          <Section title="요구사항 상세" subtitle="The What" number={4}>
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-gray-700">
+              <label className="block text-[14px] font-semibold text-toss-gray-900">
                 핵심 기능 리스트
               </label>
               {form.features.map((feature, index) => (
                 <div
                   key={index}
-                  className="rounded-lg border border-gray-200 bg-white p-4 space-y-3"
+                  className="rounded-2xl border border-toss-gray-200 bg-toss-gray-50 p-5 space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-500">
+                    <span className="text-[13px] font-semibold text-toss-blue">
                       기능 {String.fromCharCode(65 + index)}
                     </span>
                     {form.features.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeFeature(index)}
-                        className="text-sm text-red-500 hover:text-red-700"
+                        className="text-[13px] text-toss-gray-400 hover:text-toss-red transition-colors"
                       >
                         삭제
                       </button>
@@ -295,7 +305,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={addFeature}
-                className="w-full rounded-lg border-2 border-dashed border-gray-300 py-3 text-sm text-gray-500 hover:border-blue-400 hover:text-blue-500 transition-colors"
+                className="w-full rounded-2xl border-2 border-dashed border-toss-gray-300 py-3.5 text-[14px] font-medium text-toss-gray-500 hover:border-toss-blue hover:text-toss-blue transition-colors"
               >
                 + 기능 추가
               </button>
@@ -312,7 +322,7 @@ export default function Home() {
           </Section>
 
           {/* 사용자 경험 */}
-          <Section title="사용자 경험 (UX/UI)">
+          <Section title="사용자 경험" subtitle="UX/UI" number={5}>
             <Field label="핵심 와이어프레임/플로우">
               <input
                 type="text"
@@ -336,7 +346,7 @@ export default function Home() {
           </Section>
 
           {/* 예외 케이스 및 제약 사항 */}
-          <Section title="예외 케이스 및 제약 사항">
+          <Section title="예외 케이스 및 제약 사항" number={6}>
             <Field label="Empty State 처리">
               <textarea
                 rows={2}
@@ -371,10 +381,10 @@ export default function Home() {
           {/* 결과 메시지 */}
           {result && (
             <div
-              className={`rounded-lg p-4 text-sm ${
+              className={`rounded-2xl p-4 text-[14px] font-medium ${
                 result.success
-                  ? "bg-green-50 text-green-800 border border-green-200"
-                  : "bg-red-50 text-red-800 border border-red-200"
+                  ? "bg-toss-green-light text-toss-green"
+                  : "bg-toss-red-light text-toss-red"
               }`}
             >
               {result.message}
@@ -385,11 +395,16 @@ export default function Home() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-lg bg-blue-600 py-3 text-white font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="w-full rounded-2xl bg-toss-blue py-4 text-[16px] text-white font-bold hover:bg-toss-blue-hover active:scale-[0.98] disabled:bg-toss-gray-300 disabled:cursor-not-allowed transition-all duration-200"
           >
             {submitting ? "저장 중..." : "노션에 PRD 저장하기"}
           </button>
         </form>
+
+        {/* 푸터 */}
+        <p className="mt-8 mb-6 text-center text-[12px] text-toss-gray-400">
+          Powered by Notion API
+        </p>
       </div>
     </main>
   );
@@ -397,16 +412,32 @@ export default function Home() {
 
 function Section({
   title,
+  subtitle,
+  number,
   children,
 }: {
   title: string;
+  subtitle?: string;
+  number: number;
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-5">
-      <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3">
-        {title}
-      </h2>
+    <section className="rounded-3xl bg-toss-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] space-y-5">
+      <div className="flex items-center gap-3 pb-4 border-b border-toss-gray-100">
+        <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-toss-blue text-white text-[13px] font-bold">
+          {number}
+        </span>
+        <div>
+          <h2 className="text-[17px] font-bold text-toss-black leading-tight">
+            {title}
+          </h2>
+          {subtitle && (
+            <span className="text-[12px] text-toss-gray-400 font-medium">
+              {subtitle}
+            </span>
+          )}
+        </div>
+      </div>
       {children}
     </section>
   );
@@ -423,9 +454,9 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-semibold text-gray-700">
+      <label className="mb-2 block text-[14px] font-semibold text-toss-gray-900">
         {label}
-        {required && <span className="ml-1 text-red-500">*</span>}
+        {required && <span className="ml-1 text-toss-blue">*</span>}
       </label>
       {children}
     </div>
