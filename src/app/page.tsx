@@ -46,7 +46,7 @@ const initialForm: PRDForm = {
   kpi: "",
   targetUser: "",
   userStory: "",
-  features: [{ name: "", description: "", priority: "P0" }],
+  features: [{ name: "", description: "", priority: "🔴P0" }],
   policyNotes: "",
   wireframeLink: "",
   keyInteractions: "",
@@ -73,7 +73,7 @@ export default function Home() {
   const addFeature = () => {
     setForm((prev) => ({
       ...prev,
-      features: [...prev.features, { name: "", description: "", priority: "P0" as const }],
+      features: [...prev.features, { name: "", description: "", priority: "🔴P0" as const }],
     }));
   };
 
@@ -296,9 +296,9 @@ export default function Home() {
                     }
                     className="input-field"
                   >
-                    <option value="P0">P0: 필수</option>
-                    <option value="P1">P1: 권장</option>
-                    <option value="P2">P2: 추후 논의</option>
+                    <option value="🔴P0">🔴P0: 필수</option>
+                    <option value="🟡P1">🟡P1: 권장</option>
+                    <option value="🟢P2">🟢P2: 추후 논의</option>
                   </select>
                 </div>
               ))}
