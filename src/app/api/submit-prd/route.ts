@@ -25,6 +25,76 @@ interface PRDPayload {
   technicalConstraints: string;
 }
 
+/**
+ * 데이터베이스에 필요한 속성(프로젝트명, 작성자, 상태, 작성일)이 없으면 자동으로 추가한다.
+ * Notion SDK v5 타입에 properties 파라미터가 빠져 있어 raw fetch 사용.
+ */
+async function ensureDatabaseProperties(
+  databaseId: string,
+  token: string
+): Promise<void> {
+  // 1) 현재 데이터베이스 속성 조회
+  const getRes = await fetch(
+    `https://api.notion.com/v1/databases/${databaseId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Notion-Version": "2022-06-28",
+      },
+    }
+  );
+  if (!getRes.ok) return; // 조회 실패 시 skip (페이지 생성에서 에러 발생할 것)
+
+  const db = await getRes.json();
+  const props: Record<string, { type: string }> = db.properties ?? {};
+
+  // 기존 title 속성명 찾기
+  let titleKey = "Name";
+  for (const [key, val] of Object.entries(props)) {
+    if (val.type === "title") {
+      titleKey = key;
+      break;
+    }
+  }
+
+  // 필요한 속성 중 누락된 것만 모으기
+  const updates: Record<string, unknown> = {};
+
+  if (titleKey !== "프로젝트명") {
+    updates[titleKey] = { name: "프로젝트명" };
+  }
+  if (!props["작성자"]) {
+    updates["작성자"] = { rich_text: {} };
+  }
+  if (!props["상태"]) {
+    updates["상태"] = {
+      select: {
+        options: [
+          { name: "초안", color: "gray" },
+          { name: "검토 중", color: "yellow" },
+          { name: "확정", color: "green" },
+        ],
+      },
+    };
+  }
+  if (!props["작성일"]) {
+    updates["작성일"] = { date: {} };
+  }
+
+  if (Object.keys(updates).length === 0) return;
+
+  // 2) 속성 업데이트
+  await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": "2022-06-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ properties: updates }),
+  });
+}
+
 export async function POST(request: Request) {
   const notionToken = process.env.NOTION_API_KEY;
   const databaseId = process.env.NOTION_DATABASE_ID;
@@ -65,6 +135,10 @@ export async function POST(request: Request) {
     .join("\n\n");
 
   try {
+    // 데이터베이스 속성 자동 세팅 (최초 1회만 실제 업데이트 발생)
+    await ensureDatabaseProperties(databaseId, notionToken);
+
+    // 페이지 생성
     await notion.pages.create({
       parent: { database_id: databaseId },
       properties: {
