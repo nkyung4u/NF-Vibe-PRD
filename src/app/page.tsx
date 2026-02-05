@@ -143,7 +143,7 @@ export default function Home() {
             </svg>
           </div>
           <h1 className="text-[26px] font-bold text-toss-black tracking-tight">
-            🌈 NF AIIT PRD 접수
+            NEOFLAT AX PRD 접수
           </h1>
           <p className="mt-1.5 text-[15px] text-toss-gray-500">
             양식을 작성하면 노션 데이터베이스에 자동으로 저장됩니다
